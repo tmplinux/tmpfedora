@@ -1,0 +1,40 @@
+#!/bin/bash
+set -e
+((EUID==0)) || { echo "run as root"; exit 1; }
+
+RELEASE=42
+COPY="/var/lib/tmplinux/tmpfedora"
+SFS="/var/lib/tmplinux/tmpfedora.sfs"
+TMP=$(mktemp -d /tmp/container-XXXX)
+trap 'rm -rf "$TMP"' EXIT
+
+rm /var/lib/tmp*.sfs
+[[ -f $SFS ]] || {
+    mkdir -p "$COPY/etc/yum.repos.d"
+    tee "$COPY/etc/yum.repos.d/fedora.repo" > /dev/null <<EOF
+[fedora]
+name=Fedora \$releasever - \$basearch
+baseurl=https://download.fedoraproject.org/pub/fedora/linux/releases/$RELEASE/Everything/\$basearch/os/
+enabled=1
+gpgcheck=0
+
+[updates]
+name=Fedora \$releasever - \$basearch - Updates
+baseurl=https://download.fedoraproject.org/pub/fedora/linux/updates/$RELEASE/Everything/\$basearch/
+enabled=1
+gpgcheck=0
+EOF
+
+    dnf --installroot="$COPY" --releasever=$RELEASE \
+        --setopt=install_weak_deps=False groupinstall "Core" -y
+    chroot "$COPY" passwd -d root
+    chroot "$COPY" /bin/bash -c "systemctl mask auditd.service audit-rules.service"
+    rm -f "$COPY/etc/yum.repos.d/"*.repo
+    mksquashfs "$COPY" "$SFS" -comp zstd
+    rm -rf "$COPY"
+}
+
+# Boot the container
+unsquashfs -f -d "$TMP" "$SFS"
+systemd-nspawn -D "$TMP" --boot --network-veth -E TERM=linux
+

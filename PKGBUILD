@@ -1,11 +1,11 @@
 pkgname=tmpfedora
 pkgver=1.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Part of the tmplinux suite. Temporary Fedora"
 arch=('any')
 url="https://github.com/TheOddCell/tmpfedora"
 license=('MIT')
-depends=('bash' 'dnf' 'shadow' 'util-linux' 'systemd' 'squashfs-tools')
+depends=('bash' 'dnf5' 'shadow' 'util-linux' 'systemd' 'squashfs-tools')
 makedepends=()
 source=('tmpfedora')
 sha256sums=('SKIP')

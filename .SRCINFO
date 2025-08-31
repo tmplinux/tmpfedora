@@ -1,6 +1,6 @@
 pkgbase = tmpfedora
 	pkgdesc = Part of the tmplinux suite. Temporary Fedora
-	pkgver = 1.0.1
+	pkgver = 1.0.2
 	pkgrel = 1
 	url = https://github.com/TheOddCell/tmpfedora
 	arch = any

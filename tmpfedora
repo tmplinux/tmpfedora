@@ -8,7 +8,7 @@ SFS="/var/lib/tmplinux/tmpfedora.sfs"
 TMP=$(mktemp -d /tmp/container-XXXX)
 trap 'rm -rf "$TMP"' EXIT
 
-rm /var/lib/tmp*.sfs||true
+rm /var/lib/tmp*.sfs 2>/dev/null||true
 [[ -f $SFS ]] || {
     mkdir -p "$COPY/etc/yum.repos.d"
     tee "$COPY/etc/yum.repos.d/fedora.repo" > /dev/null <<EOF

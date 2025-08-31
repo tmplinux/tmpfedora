@@ -1,5 +1,5 @@
 pkgname=tmpfedora
-pkgver=1.0.2
+pkgver=1.1.0
 pkgrel=2
 pkgdesc="Part of the tmplinux suite. Temporary Fedora"
 arch=('any')

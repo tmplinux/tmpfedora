@@ -37,5 +37,5 @@ EOF
 # Boot the container
 unsquashfs -f -d "$TMP" "$SFS"
 basename "$TMP" > /run/tmpfedora
-systemd-nspawn -D "$TMP" --boot --network-veth -E TERM=linux
+systemd-nspawn -D "$TMP" --boot -E TERM=linux
 rm /run/tmpfedora

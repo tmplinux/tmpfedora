@@ -26,7 +26,7 @@ gpgcheck=0
 EOF
 
     dnf5 --installroot="$COPY" --releasever="$RELEASE" \
-      --no-weakdeps group install core -y
+      group install core -y
     chroot "$COPY" passwd -d root
     chroot "$COPY" /bin/bash -c "systemctl mask auditd.service audit-rules.service"
     rm -f "$COPY/etc/yum.repos.d/"*.repo
